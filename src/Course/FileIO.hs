@@ -62,41 +62,41 @@ the contents of c
 -- /Tip:/ use @getArgs@ and @run@
 main ::
   IO ()
-main =
-  error "todo"
+main = getArgs >>= doHwat
+    where
+    doHwat :: List Chars -> IO ()
+    doHwat Nil = putStrLn "what the hell, man"
+    doHwat (h :. _) = readFile h >>= run
 
-type FilePath =
+type FilePath = 
   Chars
 
 -- /Tip:/ Use @getFiles@ and @printFiles@.
 run ::
   Chars
   -> IO ()
-run =
-  error "todo"
+run c = (getFiles $ lines c) >>= printFiles
 
 getFiles ::
   List FilePath
   -> IO (List (FilePath, Chars))
-getFiles =
-  error "todo"
+getFiles = sequence . (map getFile)
 
 getFile ::
   FilePath
   -> IO (FilePath, Chars)
-getFile =
-  error "todo"
+getFile f = ((,) f) <$> readFile f 
 
 printFiles ::
   List (FilePath, Chars)
   -> IO ()
-printFiles =
-  error "todo"
+printFiles = foldRight (*>) (return ()) . (map $ uncurry printFile)
 
 printFile ::
   FilePath
   -> Chars
   -> IO ()
-printFile =
-  error "todo"
-
+printFile f c = putStrLn content
+    where 
+    header = unwords $ "============" :. f :. Nil
+    content = unlines $ header :. c :. Nil
